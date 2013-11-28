@@ -35,7 +35,10 @@ class Test(object):
         self.result = result
         self.id = id
         self.description = description
-        self.directive = directive
+        try:
+            self.directive = directive.upper()
+        except AttributeError:
+            self.directive = directive
         self.comment = comment
         self.yaml = None
         self._yaml_buffer = None
@@ -112,13 +115,20 @@ class TAP13(object):
                     # according to TAP13 specs, missing tests must be handled as 'not ok'
                     # here we add the missing tests in sequence
                     while t_attrs['id'] > self.__tests_counter:
-                        print repr(t_attrs['id']), repr(self.__tests_counter)
-                        #self.tests.append(Test('not ok', self.__tests_counter, comment = 'DIAG: Test %s not present' % self.__tests_counter))
+                        self.tests.append(Test('not ok', self.__tests_counter, comment = 'DIAG: Test %s not present' % self.__tests_counter))
                         self.__tests_counter += 1
                     t = Test(**t_attrs)
                     self.tests.append(t)
                     in_test = True
                     continue
+
+        if self.tests_planned is None:
+            # TODO: raise better error than ValueError
+            raise ValueError("Missing plan in the TAP source")
+
+        if len(self.tests) != self.tests_planned:
+            for i in range(len(self.tests), self.tests_planned):
+                self.tests.append(Test('not ok', i+1, comment = 'DIAG: Test %s not present'))
 
 
     def parse(self, source):
