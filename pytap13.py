@@ -31,7 +31,7 @@ RE_YAMLISH_END = re.compile(r"^.*\.\.\.\s*$")
 
 
 class Test(object):
-    def __init__(self, result, id = None, description = None, directive = None, comment = None):
+    def __init__(self, result, id, description = None, directive = None, comment = None):
         self.result = result
         self.id = id
         self.description = description
@@ -45,9 +45,8 @@ class Test(object):
 class TAP13(object):
     def __init__(self):
         self.tests = []
-        self.tests_counter = 0
+        self.__tests_counter = 0
         self.tests_planned = None
-        self.plan_comment = None
 
 
     def _parse(self, source):
@@ -92,23 +91,30 @@ class TAP13(object):
                 m = RE_PLAN.match(line)
                 if m:
                     d = m.groupdict()
-                    self.tests_planned = d.get('end', 0)
+                    self.tests_planned = int(d.get('end', 0))
                     seek_plan = False
 
                     # Stop processing if tests were found before the plan
                     #    if plan is at the end, it must be the last line -> stop processing
-                    if self.tests_counter > 0:
+                    if self.__tests_counter > 0:
                         break
 
             if seek_test:
                 m = RE_TEST_LINE.match(line)
                 if m:
-                    self.tests_counter += 1
+                    self.__tests_counter += 1
                     t_attrs = m.groupdict()
                     if t_attrs['id'] is None:
-                        t_attrs['id'] = self.tests_counter
-                    if t_attrs['id'] < self.tests_counter:
+                        t_attrs['id'] = self.__tests_counter
+                    t_attrs['id'] = int(t_attrs['id'])
+                    if t_attrs['id'] < self.__tests_counter:
                         raise ValueError("Descending test id on line: %r" % line)
+                    # according to TAP13 specs, missing tests must be handled as 'not ok'
+                    # here we add the missing tests in sequence
+                    while t_attrs['id'] > self.__tests_counter:
+                        print repr(t_attrs['id']), repr(self.__tests_counter)
+                        #self.tests.append(Test('not ok', self.__tests_counter, comment = 'DIAG: Test %s not present' % self.__tests_counter))
+                        self.__tests_counter += 1
                     t = Test(**t_attrs)
                     self.tests.append(t)
                     in_test = True
