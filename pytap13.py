@@ -66,7 +66,7 @@ class TAP13(object):
                     in_yaml = False
                     self.tests[-1].yaml = yamlish.load(self.tests[-1]._yaml_buffer)
                 else:
-                    self.tests[-1]._yaml_buffer.append(line)
+                    self.tests[-1]._yaml_buffer.append(line.rstrip())
                 continue
 
             line = line.strip()

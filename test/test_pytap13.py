@@ -107,6 +107,25 @@ class TAP13_data_ok(unittest.TestCase):
                 }
         self.assertEqual(t.tests[1].yaml, yaml_data)
 
+    def test_multiline_yaml_string(self):
+        test_data = """
+            TAP version 13
+            1..2
+            ok 1 Input file opened
+            not ok 2 First line of the input valid
+                ---
+                message: |-
+                    First line
+                    Second line
+                ...
+        """
+        t = pytap13.TAP13()
+        t.parse(test_data)
+        yaml_data = {"message":"First line\nSecond line"}
+
+        self.assertEqual(t.tests[1].yaml, yaml_data)
+
+
     def test_directive(self):
         test_data = """
         TAP version 13
