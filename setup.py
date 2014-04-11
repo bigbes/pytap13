@@ -21,11 +21,11 @@ from distutils.core import setup
 
 setup(  name = 'pytap13',
         py_modules = ['pytap13'],
-        version = '0.0.2',
+        version = '0.0.3',
         description = 'Python parser for the Test Anything Protocol (TAP) version 13',
         author = 'Josef Skladanka',
         author_email = 'jskladan@redhat.com',
-        url = "https://bitbucket.org/rajcze/pytap13",
+        url = "https://bitbucket.org/fedoraqa/pytap13",
         install_requires = ['yamlish'],
         classifiers = [
 
