@@ -4,7 +4,7 @@
 %endif
 
 Name:           pytap13
-Version:        0.0.3
+Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Python parser for the Test Anything Protocol (TAP) version 13
 
@@ -35,5 +35,8 @@ Python parser for the Test Anything Protocol (TAP) version 13
 %{python_sitelib}/*.egg-info
 
 %changelog
+* Fri May 16 2014 Tim Flink <tflink@fedoraproject.org> - 0.1.0-1
+- Releasing pytap13 0.1.0
+
 * Fri Apr 11 2014 Tim Flink <tflink@fedoraproject.org> - 0.0.3-1
 - initial packaging
