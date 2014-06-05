@@ -60,6 +60,9 @@ class TAP13(object):
         in_test = False
         in_yaml = False
         for line in source:
+            if not seek_version and RE_VERSION.match(line):
+                raise ValueError("Bad TAP format, multiple TAP headers")
+
             if in_yaml:
                 if RE_YAMLISH_END.match(line):
                     self.tests[-1]._yaml_buffer.append(line.strip())

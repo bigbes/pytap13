@@ -143,5 +143,43 @@ class TAP13_data_ok(unittest.TestCase):
         self.assertEqual(t.tests[2].directive, None)
         self.assertEqual(t.tests[2].comment, "just a comment")
 
+
+class TAP13_data_bad(unittest.TestCase):
+    def test_multiple_tap_headers(self):
+        #simplified test data from phab/T205
+        test_data = """
+        TAP version 13
+        1..1
+        ok - $CHECKNAME for Koji build xchat.rpm
+          ---
+          details:
+            output: |
+              foo
+              bar
+              baz
+          item: xchat.rpm
+          outcome: PASSED
+          summary: RPMLINT PASSED for xchat.rpm
+          type: koji_build
+          ...
+        TAP version 13
+        1..1
+        ok - $CHECKNAME for Koji build xchat-tcl.rpm
+          ---
+          details:
+            output: |
+              foo
+              bar
+          item: xchat-tcl.rpm
+          outcome: PASSED
+          summary: RPMLINT PASSED for xchat-tcl.rpm
+          type: koji_build
+          ...
+        """
+
+        t = pytap13.TAP13()
+
+        self.assertRaises(ValueError, t.parse, test_data)
+
 if __name__ == "__main__":
     unittest.main()
