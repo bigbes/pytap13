@@ -27,7 +27,7 @@ RE_PLAN = re.compile(r"^\s*(?P<start>\d+)\.\.(?P<end>\d+)\s*(#\s*(?P<explanation
 RE_TEST_LINE = re.compile(r"^\s*(?P<result>(not\s+)?ok)\s*(?P<id>\d+)?\s*(?P<description>[^#]+)?\s*(#\s*(?P<directive>TODO|SKIP)?\s*(?P<comment>.+)?)?\s*$",  re.IGNORECASE)
 RE_EXPLANATION = re.compile(r"^\s*#\s*(?P<explanation>.+)?\s*$")
 RE_YAMLISH_START = re.compile(r"^\s*---.*$")
-RE_YAMLISH_END = re.compile(r"^.*\.\.\.\s*$")
+RE_YAMLISH_END = re.compile(r"^\s*\.\.\.\s*$")
 
 
 class Test(object):

@@ -143,6 +143,23 @@ class TAP13_data_ok(unittest.TestCase):
         self.assertEqual(t.tests[2].directive, None)
         self.assertEqual(t.tests[2].comment, "just a comment")
 
+    def test_fake_yamlish_end(self):
+        test_data = """
+            TAP version 13
+            1..1
+            ok 1 Tripledot test
+                ---
+                message: |-
+                    This line is ok ...
+                    Second line
+                ...
+        """
+        t = pytap13.TAP13()
+        t.parse(test_data)
+        yaml_data = {"message":"This line is ok ...\nSecond line"}
+
+        self.assertEqual(t.tests[0].yaml, yaml_data)
+
 
 class TAP13_data_bad(unittest.TestCase):
     def test_multiple_tap_headers(self):
@@ -180,6 +197,7 @@ class TAP13_data_bad(unittest.TestCase):
         t = pytap13.TAP13()
 
         self.assertRaises(ValueError, t.parse, test_data)
+
 
 if __name__ == "__main__":
     unittest.main()
