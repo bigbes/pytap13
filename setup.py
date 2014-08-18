@@ -21,7 +21,7 @@ from distutils.core import setup
 
 setup(  name = 'pytap13',
         py_modules = ['pytap13'],
-        version = '0.2.0',
+        version = '0.3.0',
         description = 'Python parser for the Test Anything Protocol (TAP) version 13',
         author = 'Josef Skladanka',
         author_email = 'jskladan@redhat.com',

@@ -4,7 +4,7 @@
 %endif
 
 Name:           pytap13
-Version:        0.2.0
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Python parser for the Test Anything Protocol (TAP) version 13
 
