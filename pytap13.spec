@@ -35,6 +35,9 @@ Python parser for the Test Anything Protocol (TAP) version 13
 %{python_sitelib}/*.egg-info
 
 %changelog
+* Fri Aug 22 2014 Martin Krizek <mkrizek@redhat.com> - 0.3.0-1
+- fixed yamlish parsing
+
 * Fri Jun 13 2014 Tim Flink <tflink@fedoraproject.org> - 0.2.0-1
 - Raise ValueError on multiple TAP headers
 
