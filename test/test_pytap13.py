@@ -63,6 +63,7 @@ class TAP13_data_ok(unittest.TestCase):
         tx = t.tests[3]
         self.assertEqual(tx.id, 4)
         self.assertEqual(tx.result, 'not ok')
+        self.assertEqual(tx.comment, 'DIAG: Test 4 not present')
 
     def test_missing_result_in_between(self):
         test_data = """

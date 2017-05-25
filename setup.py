@@ -19,25 +19,24 @@
 
 from distutils.core import setup
 
-setup(  name = 'pytap13',
-        py_modules = ['pytap13'],
-        version = '0.3.0',
-        description = 'Python parser for the Test Anything Protocol (TAP) version 13',
-        author = 'Josef Skladanka',
-        author_email = 'jskladan@redhat.com',
-        url = "https://bitbucket.org/fedoraqa/pytap13",
-        install_requires = ['yamlish'],
-        classifiers = [
-
-            "Development Status :: 2 - Pre-Alpha",
-            "Intended Audience :: Developers",
-            "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
-            "Operating System :: OS Independent",
-            "Programming Language :: Python :: 2",
-            "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
-            "Topic :: Software Development :: Testing",
-            "Topic :: Software Development :: Libraries :: Python Modules",
-            ],
-
-     )
+setup(
+    name = 'pytap13',
+    py_modules = ['pytap13'],
+    version = '0.3.0',
+    description = 'Python parser for the Test Anything Protocol (TAP) version 13',
+    author = 'Josef Skladanka',
+    author_email = 'jskladan@redhat.com',
+    url = "https://bitbucket.org/fedoraqa/pytap13",
+    install_requires = ["pyyaml"],
+    classifiers = [
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2",
+        "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+        "Topic :: Software Development :: Testing",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+)
 

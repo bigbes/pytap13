@@ -17,9 +17,12 @@
 # Author: Josef Skladanka <jskladan@redhat.com>
 
 import re
-import yamlish
-import StringIO
+try:
+    from CStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
+import yaml
 
 
 RE_VERSION = re.compile(r"^\s*TAP version 13\s*$")
@@ -41,7 +44,7 @@ class Test(object):
             self.directive = directive
         self.comment = comment
         self.yaml = None
-        self._yaml_buffer = None
+        self._yaml_buffer = StringIO()
         self.diagnostics = []
 
 
@@ -65,23 +68,22 @@ class TAP13(object):
 
             if in_yaml:
                 if RE_YAMLISH_END.match(line):
-                    self.tests[-1]._yaml_buffer.append(line.strip())
+                    test = self.tests[-1]
+                    test.yaml = yaml.load(test._yaml_buffer.getvalue())
                     in_yaml = False
-                    self.tests[-1].yaml = yamlish.load(self.tests[-1]._yaml_buffer)
                 else:
-                    self.tests[-1]._yaml_buffer.append(line.rstrip())
+                    self.tests[-1]._yaml_buffer.write(line)
                 continue
-
-            line = line.strip()
 
             if in_test:
                 if RE_EXPLANATION.match(line):
-                    self.tests[-1].diagnostics.append(line)
+                    self.tests[-1].diagnostics.append(line.strip())
                     continue
                 if RE_YAMLISH_START.match(line):
-                    self.tests[-1]._yaml_buffer = [line.strip()]
                     in_yaml = True
                     continue
+
+            line = line.strip()
 
             # this is "beginning" of the parsing, skip all lines until
             # version is found
@@ -118,7 +120,8 @@ class TAP13(object):
                     # according to TAP13 specs, missing tests must be handled as 'not ok'
                     # here we add the missing tests in sequence
                     while t_attrs['id'] > self.__tests_counter:
-                        self.tests.append(Test('not ok', self.__tests_counter, comment = 'DIAG: Test %s not present' % self.__tests_counter))
+                        comment = 'DIAG: Test %s not present' % self.__tests_counter
+                        self.tests.append(Test('not ok', self.__tests_counter, comment = comment))
                         self.__tests_counter += 1
                     t = Test(**t_attrs)
                     self.tests.append(t)
@@ -131,12 +134,12 @@ class TAP13(object):
 
         if len(self.tests) != self.tests_planned:
             for i in range(len(self.tests), self.tests_planned):
-                self.tests.append(Test('not ok', i+1, comment = 'DIAG: Test %s not present'))
+                self.tests.append(Test('not ok', i + 1, comment = 'DIAG: Test %s not present' % (i + 1)))
 
 
     def parse(self, source):
         if isinstance(source, (str, unicode)):
-            self._parse(StringIO.StringIO(source))
+            self._parse(StringIO(source))
         elif hasattr(source, "__iter__"):
             self._parse(source)
 
